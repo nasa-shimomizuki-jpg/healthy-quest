@@ -47,7 +47,7 @@ h1{margin:8px 0 6px;font-size:clamp(34px,8.4vw,92px);line-height:1;font-weight:8
 .foot{margin:0;font-size:12.5px;color:rgba(255,255,255,.75)}
 .foot a{margin-right:18px;color:#fff;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .btn{appearance:none;border:0;border-radius:4px;padding:11px 16px;font:inherit;font-size:14.5px;font-weight:700;color:#fff;background:#e8743b;cursor:pointer}
-.btn
+.btn.sub{background:#5a6480}
 #modal{position:fixed;inset:0;z-index:20;background:rgba(3,6,18,.72);display:none;align-items:center;justify-content:center;padding:12px}
 #modal.on{display:flex}
 .sheet{width:min(760px,100%);max-height:92%;display:flex;flex-direction:column;background:#fff;color:#17233f;border-radius:6px;overflow:hidden;-webkit-user-select:text;user-select:text}
@@ -68,7 +68,6 @@ h1{margin:8px 0 6px;font-size:clamp(34px,8.4vw,92px);line-height:1;font-weight:8
 .chk{display:block;margin:10px 0;font-weight:700}
 .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:12px 0}
 
-#mbody .btn
 fieldset{border:1px solid #c5d2ee;border-radius:12px;margin:10px 0;padding:8px 12px 12px}
 legend{font-weight:900;color:#2a3f7a;padding:0 6px}.ans{font-weight:700;font-size:12.5px;color:#18875a;margin-left:8px}
 #mbody label{display:block;font-size:12.5px;font-weight:700;margin-top:6px}
@@ -4063,6 +4062,197 @@ ${t}`}),ft("hover"),await An(1);rg()}(s||ln.start)(...e||[])}function rg(){Vs&&(
   <label class="chk"><input type="checkbox" id="o-mute" ${Nn.muted?"checked":""}> 音をすべて消す</label>
   <div class="row"><button class="btn sub" id="o-reset">前の人のスコアと最高記録を消す</button><span id="o-msg" class="small"></span></div>
   <div class="note"><b>授業での使い方（めやす）</b><br>1コース＝操縦4区間＋問題8問で約2分。問題は全66問（3択・数あて・ホントウソ・さがせ）から毎回ランダムに出ます。<br>「前の人のスコア」は端末ごとに保存されます。班ごとに1台を回して競うか、黒板にスコアを書いてクラス対抗に。<br>「見回してさがせ」は後ろを向くので、回転いすだと遊びやすくなります。</div>`),yt("o-slow").addEventListener("change",e=>{_t.opt.slow=e.target.checked,es()}),yt("o-voice").addEventListener("change",e=>{_t.opt.voice=e.target.checked,Nn.voice=e.target.checked,es()}),yt("o-mute").addEventListener("change",e=>{nd(e.target.checked)});let s=!1;yt("o-reset").addEventListener("click",()=>{if(!s){s=!0,yt("o-reset").textContent="もう一度おすと消えます";return}H0(),s=!1,yt("o-reset").textContent="前の人のスコアと最高記録を消す",yt("o-msg").textContent="消しました。"})}yt("b-vr").addEventListener("click",()=>lg("vr"));yt("b-mono").addEventListener("click",()=>lg("mono"));yt("b-how").addEventListener("click",nS);yt("b-teacher").addEventListener("click",iS);yt("x-exit").addEventListener("click",fd);yt("x-full").addEventListener("click",()=>{document.fullscreenElement||document.webkitFullscreenElement?og():ag()});yt("x-mute").addEventListener("click",()=>{nd(!Nn.muted),yt("x-mute").textContent=Nn.muted?"🔇":"🔊"});Nn.voice=_t.opt.voice!==!1;dd();U0();ti(ln.titleScene);window.__ebq={E:Oe,debug:F0,go:ti,ST:ln,controls:Vl,state:()=>_t,save:es};})();
+</script>
+<!-- ===== 観戦モード（体験者の画面をPCで見る）===== -->
+<style>
+#spec-badge{position:fixed;left:8px;top:8px;z-index:8;display:none;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:rgba(13,22,48,.75);border:1px solid rgba(255,255,255,.35);font-size:12px;font-weight:800;color:#fff;pointer-events:none}
+#spec-badge.on{display:flex}
+#spec-badge i{width:8px;height:8px;border-radius:50%;background:#8a93ad;font-style:normal}
+#spec-badge.live i{background:#ff4d6d;box-shadow:0 0 6px #ff4d6d}
+body.playing[data-mode=vr] #spec-badge{display:none}
+.spec-code{font-size:56px;font-weight:900;letter-spacing:.18em;color:#e8743b;text-align:center;margin:6px 0;font-variant-numeric:tabular-nums}
+.spec-st{text-align:center;font-weight:700;margin:4px 0 10px}
+#spec-view{position:fixed;inset:0;z-index:40;background:#05060f;display:none;flex-direction:column;color:#fff}
+#spec-view.on{display:flex}
+#spec-view header{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#0e1116;border-bottom:1px solid rgba(255,255,255,.12)}
+#spec-view header b{font-size:15px;letter-spacing:.08em}
+#spec-view header span{flex:1;font-size:13px;color:rgba(255,255,255,.75)}
+#spec-view header button{appearance:none;font:inherit;font-size:13px;font-weight:700;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.5);border-radius:4px;padding:7px 12px;cursor:pointer}
+#spec-stage{position:relative;flex:1;min-height:0}
+#spec-cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+#spec-join{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:16px}
+#spec-join input{width:min(280px,100%);font:inherit;font-size:44px;font-weight:900;letter-spacing:.2em;text-align:center;padding:10px;border-radius:8px;border:2px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);color:#fff;-webkit-user-select:text;user-select:text}
+#spec-join p{margin:0;color:rgba(255,255,255,.8);line-height:1.7}
+#spec-msg{min-height:1.5em;font-weight:700;color:#ffd34d}
+</style>
+<div id="spec-badge"><i></i><span>観戦</span></div>
+<div id="spec-view">
+  <header><b>観戦モード</b><span id="spec-info">体験者のスマホに表示された観戦コードを入れてください</span>
+    <button id="spec-full">全画面</button><button id="spec-close">とじる</button></header>
+  <div id="spec-stage">
+    <canvas id="spec-cv"></canvas>
+    <div id="spec-join">
+      <p>体験者のスマホで「観戦をうけつける」をおすと<br>4けたの観戦コードが出ます。</p>
+      <input id="spec-code" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off">
+      <button class="btn" id="spec-go">観戦する</button>
+      <div id="spec-msg"></div>
+    </div>
+  </div>
+</div>
+<script>
+(()=>{
+  const $=id=>document.getElementById(id);
+  const PREFIX="healthyquest-spec-v1-";
+  const OPTS=window.HQ_SPEC_PEER||{}; // 自前のPeerJSサーバーを使うときは {host,port,path,secure} を指定
+  const LIBS=["https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.4/peerjs.min.js","https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"];
+  const store={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch{}}};
+  let libP=null;
+  function loadLib(){
+    if(window.Peer)return Promise.resolve();
+    if(libP)return libP;
+    libP=(async()=>{for(const src of LIBS){try{await new Promise((ok,ng)=>{const s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=ng;document.head.appendChild(s)});if(window.Peer)return}catch{}}libP=null;throw new Error("lib")})();
+    return libP;
+  }
+  const mode=()=>document.body.dataset.mode==="vr"?"vr":"mono";
+
+  /* ---------- 体験者（スマホ）側：画面を配信 ---------- */
+  const host={peer:null,code:null,stream:null,viewers:new Map(),state:"off",retry:null};
+  function badge(){
+    const b=$("spec-badge"),n=host.viewers.size;
+    b.classList.toggle("on",host.state!=="off");
+    b.classList.toggle("live",n>0);
+    b.querySelector("span").textContent=n>0?`観戦中 ${n}人`:`観戦コード ${host.code||"----"}`;
+    const st=$("spec-st");
+    if(st)st.textContent=host.state==="ready"?(n>0?`${n}人が観戦中です`:"PCからの接続を待っています…"):host.state==="connecting"?"準備中…":host.state==="error"?"接続できませんでした。ネットワークを確認してください":"";
+  }
+  function newCode(){return String(Math.floor(1000+Math.random()*9000))}
+  function broadcast(msg){for(const v of host.viewers.values()){try{v.conn.open&&v.conn.send(msg)}catch{}}}
+  async function hostStart(){
+    if(host.state==="ready"||host.state==="connecting")return;
+    host.state="connecting";host.code=host.code||store.get("hq-spec-code")||newCode();badge();
+    try{await loadLib()}catch{host.state="error";badge();return}
+    if(!host.stream){
+      const cv=$("gl"),cap=cv.captureStream||cv.mozCaptureStream;
+      if(!cap){host.state="error";badge();alert("このブラウザは画面の配信に対応していません");return}
+      host.stream=cap.call(cv,30);
+    }
+    const peer=new Peer(PREFIX+host.code,OPTS);host.peer=peer;
+    peer.on("open",()=>{host.state="ready";store.set("hq-spec-code",host.code);store.set("hq-spec-on","1");badge()});
+    peer.on("connection",conn=>{
+      conn.on("open",()=>{
+        const call=peer.call(conn.peer,host.stream);
+        host.viewers.set(conn.peer,{conn,call});
+        conn.send({t:"mode",mode:mode()});badge();
+      });
+      const drop=()=>{const v=host.viewers.get(conn.peer);if(v){try{v.call&&v.call.close()}catch{}host.viewers.delete(conn.peer);badge()}};
+      conn.on("close",drop);conn.on("error",drop);
+    });
+    peer.on("disconnected",()=>{if(host.state==="ready"){try{peer.reconnect()}catch{}}});
+    peer.on("error",e=>{
+      if(e.type==="unavailable-id"){peer.destroy();host.peer=null;host.code=newCode();host.state="off";hostStart();return}
+      if(["network","server-error","socket-error","socket-closed"].includes(e.type)){
+        peer.destroy();host.peer=null;host.state="error";badge();
+        clearTimeout(host.retry);host.retry=setTimeout(()=>{if(host.state==="error"){host.state="off";hostStart()}},5000);
+      }
+    });
+  }
+  function hostStop(){
+    clearTimeout(host.retry);store.set("hq-spec-on",null);
+    for(const v of host.viewers.values()){try{v.call&&v.call.close();v.conn.close()}catch{}}
+    host.viewers.clear();
+    if(host.peer){host.peer.destroy();host.peer=null}
+    if(host.stream){host.stream.getTracks().forEach(t=>t.stop());host.stream=null}
+    host.state="off";badge();
+  }
+  // VR(左右2画面)／画面モードの切り替えを観戦側へ伝える
+  new MutationObserver(()=>broadcast({t:"mode",mode:mode()})).observe(document.body,{attributes:true,attributeFilter:["data-mode"]});
+
+  function openHostSheet(){
+    $("mtitle").textContent="観戦をうけつける（体験者のスマホ）";
+    $("mbody").innerHTML=`
+      <p>この画面を、先生や友だちがパソコンで見られるようにします。</p>
+      <div class="spec-code" id="spec-codebox">${host.code||store.get("hq-spec-code")||"----"}</div>
+      <div class="spec-st" id="spec-st"></div>
+      <div class="row" style="justify-content:center">
+        <button class="btn" id="spec-on">${host.state==="off"||host.state==="error"?"観戦をうけつける":"うけつけ中（とめる）"}</button>
+      </div>
+      <h3>パソコンでの見かた</h3>
+      <ol class="steps"><li>パソコンでこのアプリを開き、タイトル画面の「観戦モード（PC）」をクリック</li><li>上の4けたの観戦コードを入れる</li></ol>
+      <div class="note">・スマホとパソコンがインターネットにつながっている必要があります（同じWi-Fiだとつながりやすい）<br>・VRゴーグルモードのときは、パソコンには片目ぶん（1画面）が大きく表示されます<br>・観戦コードはこの端末で固定です。ゲームを始めても配信はつづきます</div>`;
+    $("modal").classList.add("on");$("mbody").scrollTop=0;
+    $("spec-on").onclick=async()=>{
+      if(host.state==="off"||host.state==="error"){await hostStart()}else hostStop();
+      openHostSheet();
+    };
+    badge();
+  }
+  // 状態の変化に合わせてシートの表示を更新
+  const _badge=badge;badge=function(){_badge();const box=$("spec-codebox"),on=$("spec-on");if(box)box.textContent=host.code||"----";if(on)on.textContent=host.state==="off"||host.state==="error"?"観戦をうけつける":"うけつけ中（とめる）"};
+
+  /* ---------- 観戦側（PC）：受信して表示 ---------- */
+  const view={peer:null,video:null,mode:"mono",raf:0,conn:null};
+  function vmsg(s){$("spec-msg").textContent=s}
+  function viewOpen(){$("spec-view").classList.add("on");$("spec-join").style.display="flex";setTimeout(()=>$("spec-code").focus(),50)}
+  function viewClose(){
+    cancelAnimationFrame(view.raf);
+    if(view.peer){view.peer.destroy();view.peer=null}
+    if(view.video){view.video.srcObject=null;view.video=null}
+    $("spec-view").classList.remove("on");
+    try{if(document.fullscreenElement)document.exitFullscreen()}catch{}
+    const u=new URL(location.href);if(u.searchParams.has("watch")){u.searchParams.delete("watch");history.replaceState(null,"",u)}
+  }
+  function draw(){
+    view.raf=requestAnimationFrame(draw);
+    const v=view.video,cv=$("spec-cv");if(!v||!v.videoWidth)return;
+    const dpr=window.devicePixelRatio||1,W=Math.round(cv.clientWidth*dpr),H=Math.round(cv.clientHeight*dpr);
+    if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
+    const sw=view.mode==="vr"?v.videoWidth/2:v.videoWidth,sh=v.videoHeight;
+    const k=Math.min(W/sw,H/sh),dw=sw*k,dh=sh*k;
+    const g=cv.getContext("2d");g.fillStyle="#05060f";g.fillRect(0,0,W,H);
+    g.drawImage(v,0,0,sw,sh,(W-dw)/2,(H-dh)/2,dw,dh);
+  }
+  async function viewConnect(code){
+    if(!/^\d{4}$/.test(code)){vmsg("4けたの数字を入れてください");return}
+    vmsg("接続中…");
+    try{await loadLib()}catch{vmsg("通信ライブラリを読みこめませんでした。ネットワークを確認してください");return}
+    if(view.peer)view.peer.destroy();
+    const peer=new Peer(OPTS);view.peer=peer;
+    let got=false;
+    const to=setTimeout(()=>{if(!got)vmsg("つながりません。コードと、スマホで「うけつけ中」になっているか確認してください")},12000);
+    peer.on("open",()=>{
+      const conn=peer.connect(PREFIX+code,{reliable:true});view.conn=conn;
+      conn.on("data",d=>{if(d&&d.t==="mode")view.mode=d.mode});
+      conn.on("close",()=>{if(view.peer===peer){$("spec-join").style.display="flex";vmsg("体験者との接続が切れました")}});
+    });
+    peer.on("call",call=>{
+      call.answer();
+      call.on("stream",stream=>{
+        got=true;clearTimeout(to);
+        const v=document.createElement("video");v.muted=true;v.playsInline=true;v.autoplay=true;v.srcObject=stream;
+        v.play().catch(()=>{});view.video=v;
+        $("spec-join").style.display="none";$("spec-info").textContent=`観戦コード ${code} を観戦中`;
+        cancelAnimationFrame(view.raf);draw();
+      });
+    });
+    peer.on("error",e=>{clearTimeout(to);vmsg(e.type==="peer-unavailable"?"そのコードの体験者が見つかりません。スマホで「観戦をうけつける」をおしてください":"接続エラー："+e.type)});
+  }
+  $("spec-go").onclick=()=>viewConnect($("spec-code").value.trim());
+  $("spec-code").addEventListener("keydown",e=>{if(e.key==="Enter")viewConnect(e.target.value.trim())});
+  $("spec-close").onclick=viewClose;
+  $("spec-full").onclick=()=>{const el=$("spec-view");try{document.fullscreenElement?document.exitFullscreen():(el.requestFullscreen||el.webkitRequestFullscreen).call(el)}catch{}};
+
+  /* ---------- タイトル画面にリンクを追加 ---------- */
+  const foot=document.querySelector("#title .foot");
+  const a1=document.createElement("a");a1.textContent="観戦をうけつける";a1.onclick=openHostSheet;
+  const a2=document.createElement("a");a2.textContent="観戦モード（PC）";a2.onclick=viewOpen;
+  foot.insertBefore(a2,foot.querySelector("span"));foot.insertBefore(a1,a2);
+
+  // URLに ?watch=1234 があればそのまま観戦
+  const q=new URLSearchParams(location.search);
+  if(q.has("watch")){viewOpen();const c=q.get("watch");if(/^\d{4}$/.test(c)){$("spec-code").value=c;viewConnect(c)}}
+  // 前回うけつけ中だった端末は自動で再開
+  else if(store.get("hq-spec-on")==="1"){host.code=store.get("hq-spec-code");hostStart()}
+})();
 </script>
 </body>
 </html>
